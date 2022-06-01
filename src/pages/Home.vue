@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-1/2 bg-[#D7E1FC]">
+    <div class="w-full h-full  bg-[#D7E1FC]">
             holaaaa soy el home
     </div>
 </template>
