@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div class="w-full h-full">
+        <div 
+        class="w-full h-full"
+        >
                 soy la barra de nava
         </div>
 
