@@ -7,6 +7,14 @@
         component: () => import('../pages/Home')
       }]
   },
+  { 
+    path: '/dashboard', 
+    component: () => import('../layouts/innerLayout.vue'),
+      children:[{
+        path:'',
+        component: () => import('../pages/Dashboard')
+      }]
+  },
 
   ]
 

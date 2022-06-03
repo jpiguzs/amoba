@@ -9,7 +9,7 @@
                 INICIAR SESIÓN
            </div>
            <div 
-           class="flex flex justify-center items-center p-[24px]"
+           class=" flex justify-center items-center p-[24px]"
            >
                <div 
                class="pr-[12px] cursor-pointer"
@@ -49,14 +49,14 @@
                <p-input class="w-full" />
                </div>
            </div>
-           <div class="p-[24px]">
+           <div class="p-[46px]  flex justify-center items-center ">
                <p-submit>
                   <template v-slot:label>
-                        login
+                       Siguiente
                   </template>
             
                   <template v-slot:icon>
-                          <v-icon name="camera" color="bg-white"/>
+                          
                   </template>
                </p-submit>
            </div>
