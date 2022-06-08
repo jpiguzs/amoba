@@ -1,21 +1,11 @@
 <template>
-  <div id="app">
-
-    <router-view></router-view>
-  </div>
+  <router-view />
 </template>
 
 <script>
+import { defineComponent } from 'vue'
 
-
-export default {
-  name: 'App',
-  components: {
-  
-  }
-}
+export default defineComponent({
+  name: 'App'
+})
 </script>
-
-<style>
-
-</style>

@@ -1,0 +1,20 @@
+// app global css in SCSS form
+body {
+    background-image: url('/bg.png');
+}
+.background{
+   background: rgba(255, 255, 255, 0.55);
+backdrop-filter: blur(10px);
+/* Note: backdrop-filter has minimal browser support */
+margin: 1%;
+border-radius: 20px;
+}
+.text-size-1{
+    font-size: 16px;
+}
+.q-drawer{
+    background-color: transparent !important;
+  }
+  .border-8px{
+      border-radius:20px;
+  }
