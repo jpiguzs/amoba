@@ -1,9 +1,9 @@
 <template>
-  <div class="full-height q-mt-xl">
-      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="person" label="Nuevo Estudiante
+  <div>
+      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="add" label="Nuevo grado
       "></q-btn>
       <q-table
-      title="Estudiantes"
+      title="Grados"
       :rows="rows"
       :columns="columns"
       :filter="filter"
@@ -45,36 +45,27 @@ export default {
 
  rows: [
   {
-    name: 'Jose 1',
+    name: '1 año',
     ci: 159,
     age: 6.0,
-    grade:'5to año',
-    section:'A'
 
   },
    {
-    name: 'Jose 1',
+    name: '2 año',
     ci: 159,
     age: 6.0,
-     grade:'5to año',
-        section:'A'
 
   },
   {
-    name: 'Jose 1',
+    name: '3 año',
     ci: 159,
     age: 6.0,
-    grade:'5to año',
-    section:'A',
-
 
   },
   {
-    name: 'Jose 1',
+    name: '4 año',
     ci: 159,
     age: 6.0,
-    grade:'5to año',
-    section:'A'
 
   },
 
@@ -93,10 +84,6 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'ci', align: 'center', label: 'cedula', field: 'ci', sortable: true },
-        { name: 'age', label: 'Edad', field: 'age', sortable: true },
-        { name: 'grade', label: 'Grado', field: 'grade', sortable: true },
-         { name: 'section', label: 'Seccion', field: 'section', sortable: true },
 
 
 

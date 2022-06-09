@@ -1,9 +1,9 @@
 <template>
   <div class="full-height q-mt-xl">
-      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="person" label="Nuevo Estudiante
-      "></q-btn>
+      <!-- <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="person" label="Nuevo Profesor
+      "></q-btn> -->
       <q-table
-      title="Estudiantes"
+      title="Usuarios"
       :rows="rows"
       :columns="columns"
       :filter="filter"
@@ -46,35 +46,26 @@ export default {
  rows: [
   {
     name: 'Jose 1',
-    ci: 159,
+    type: 'Admin',
     age: 6.0,
-    grade:'5to año',
-    section:'A'
 
   },
    {
     name: 'Jose 1',
-    ci: 159,
+    type: 'Profesor',
     age: 6.0,
-     grade:'5to año',
-        section:'A'
 
   },
   {
     name: 'Jose 1',
-    ci: 159,
+    type: 'Profesor',
     age: 6.0,
-    grade:'5to año',
-    section:'A',
-
 
   },
   {
     name: 'Jose 1',
-    ci: 159,
+    type: 'Estudiante',
     age: 6.0,
-    grade:'5to año',
-    section:'A'
 
   },
 
@@ -93,11 +84,7 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'ci', align: 'center', label: 'cedula', field: 'ci', sortable: true },
-        { name: 'age', label: 'Edad', field: 'age', sortable: true },
-        { name: 'grade', label: 'Grado', field: 'grade', sortable: true },
-         { name: 'section', label: 'Seccion', field: 'section', sortable: true },
-
+        { name: 'type', align: 'center', label: 'Tipo de usario', field: 'type', sortable: true },
 
 
       ]

@@ -18,3 +18,22 @@ border-radius: 20px;
   .border-8px{
       border-radius:20px;
   }
+.input{
+  background: #FFFFFF;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.24);
+  border-radius: 10px;
+  padding: 5px;
+
+}
+.text-grey1{
+  color:$grey1;
+  & .q-icon{
+    color:$grey2;
+  }
+}
+.text-blue1{
+  color:$blue1;
+  & .q-icon{
+    color:$blue1;
+  }
+}

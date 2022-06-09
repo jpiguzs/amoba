@@ -1,9 +1,9 @@
 <template>
-  <div class="full-height q-mt-xl">
-      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="person" label="Nuevo Estudiante
+  <div>
+      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="add" label="Nuevo Año
       "></q-btn>
       <q-table
-      title="Estudiantes"
+      title="Años escolares"
       :rows="rows"
       :columns="columns"
       :filter="filter"
@@ -15,7 +15,7 @@
       card-class="border-8px"
     >
       <template v-slot:top-right>
-        <q-input class="input" dense borderless v-model="filter" placeholder="Search">
+        <q-input class="input w-150"  dense borderless v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -45,36 +45,27 @@ export default {
 
  rows: [
   {
-    name: 'Jose 1',
-    ci: 159,
+    name: '2017-2018',
+    status: 'culminado',
     age: 6.0,
-    grade:'5to año',
-    section:'A'
 
   },
    {
-    name: 'Jose 1',
-    ci: 159,
+    name: '2018-2019',
+    status: 'culminado',
     age: 6.0,
-     grade:'5to año',
-        section:'A'
 
   },
   {
-    name: 'Jose 1',
-    ci: 159,
+    name: '2019-2020',
+    status: 'culminado',
     age: 6.0,
-    grade:'5to año',
-    section:'A',
-
 
   },
   {
-    name: 'Jose 1',
-    ci: 159,
+    name: '2020-2021',
+    status: 'En proceso',
     age: 6.0,
-    grade:'5to año',
-    section:'A'
 
   },
 
@@ -93,10 +84,15 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'ci', align: 'center', label: 'cedula', field: 'ci', sortable: true },
-        { name: 'age', label: 'Edad', field: 'age', sortable: true },
-        { name: 'grade', label: 'Grado', field: 'grade', sortable: true },
-         { name: 'section', label: 'Seccion', field: 'section', sortable: true },
+          {
+          name: 'status',
+          required: true,
+          label: 'Estatus',
+          align: 'left',
+          field: row => row.status,
+          format: val => `${val}`,
+          sortable: true
+        },
 
 
 
@@ -106,3 +102,8 @@ export default {
 }
 
 </script>
+<style>
+   .w-150{
+     width: 150px;
+   }
+</style>

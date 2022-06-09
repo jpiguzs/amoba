@@ -13,25 +13,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      class="bg-transparent"
 
-      width="200"
-    >
-    <div class="full-height flex flex-center   ">
-      <div>
-        <tabsVue v-for="(tab, index) in tabsData" :title="tab.title" :url="tab.url" :icon="tab.icon" :key="index"></tabsVue>
-
-      </div>
-
-
-
-
-
-    </div>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -48,9 +30,7 @@ import tabsVue from 'components/commons/Tabs.vue'
 const menuData =[
   {title:'Estudiantes', icon:'school', url:'/'},
   {title:'Profesores', icon:'cast_for_education', url:'/teachers'},
-   {title:'Usuarios', icon:'person', url:'/users'},
    {title:'Configuraciones', icon:'settings', url:'/settings'},
-
 ]
 
 export default defineComponent({
