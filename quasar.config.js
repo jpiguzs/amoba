@@ -25,6 +25,7 @@ module.exports = configure(function (/* ctx */) {
     boot: [
       
       'axios',
+      'db'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -99,7 +100,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [ 'Notify', 'Loading']
     },
 
     // animations: 'all', // --- includes all animations

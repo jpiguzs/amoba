@@ -1,7 +1,6 @@
 <template>
   <div>
-      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="add" label="Nueva materia
-      "></q-btn>
+       <CourseForm @refesh_courses="getCourses"></CourseForm>
       <q-table
       title="Materias"
       :rows="rows"
@@ -38,36 +37,16 @@
 <script>
 
   import { ref } from 'vue'
+  import   CourseForm  from './CourseForm.vue'
+   import { db } from 'boot/db'
 
 export default {
-  setup () {
+  components:{CourseForm},
+  data () {
     return {
 
  rows: [
-  {
-    name: 'Matematica',
-    ci: 159,
-    age: 6.0,
-
-  },
-   {
-    name: 'Fisica',
-    ci: 159,
-    age: 6.0,
-
-  },
-  {
-    name: 'Quimica',
-    ci: 159,
-    age: 6.0,
-
-  },
-  {
-    name: 'Deportes',
-    ci: 159,
-    age: 6.0,
-
-  },
+  
 
 
 
@@ -89,6 +68,21 @@ export default {
 
       ]
     }
+  },
+  methods:{
+    getCourses(){
+      db.collection('course').get().then(courses => {
+  this.rows = []
+  this.rows = courses.reverse();
+})
+    }
+  },
+  mounted(){
+    
+    this.getCourses();
+    console.log(this)
+    
+    //this.$root.on('refesh_courses', this.getCourses)
   }
 }
 

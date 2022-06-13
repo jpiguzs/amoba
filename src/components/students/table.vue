@@ -37,11 +37,17 @@
 
 <script>
 
-  import { ref } from 'vue'
+  import { ref, onMounted,  } from 'vue'
+  import { useQuasar } from 'quasar'
+  import { db } from 'boot/db'
+
 
 export default {
+  
+  
   setup () {
-    return {
+     
+return {
 
  rows: [
   {
