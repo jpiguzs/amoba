@@ -1,7 +1,6 @@
 <template>
   <div class="full-height q-mt-xl">
-      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="person" label="Nuevo Profesor
-      "></q-btn>
+      <teacherForm></teacherForm>
       <q-table
       title="Profesores"
       :rows="rows"
@@ -38,8 +37,10 @@
 <script>
 
   import { ref } from 'vue'
+  import teacherForm from './Form.vue'
 
 export default {
+  components:{teacherForm},
   setup () {
     return {
 

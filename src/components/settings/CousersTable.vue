@@ -1,6 +1,6 @@
 <template>
   <div>
-       <CourseForm @refesh_courses="getCourses"></CourseForm>
+       <CourseForm @refesh_courses="getCourses" ></CourseForm>
       <q-table
       title="Materias"
       :rows="rows"
@@ -19,6 +19,19 @@
             <q-icon name="search" />
           </template>
         </q-input>
+      </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td v-for="col in props.cols" :key="col.name" :props="props">
+            {{ col.value }}
+          </q-td>
+            <q-td key="action" class="row" :props="props">
+
+               <CourseForm @refesh_courses="getCourses" :course="props.row" ></CourseForm>
+
+
+          </q-td>
+        </q-tr>
       </template>
 
       <template v-slot:no-data="{ icon, message, filter }">
@@ -45,11 +58,8 @@ export default {
   data () {
     return {
 
+
  rows: [
-  
-
-
-
 ],
       filter: ref(''),
 
@@ -57,12 +67,18 @@ export default {
         {
           name: 'name',
           required: true,
-          label: 'Nomber',
+          label: 'Nombre',
           align: 'left',
           field: row => row.name,
           format: val => `${val}`,
           sortable: true
-        },
+        },{
+            name: 'action',
+          required: true,
+          label: 'Acciones',
+          align: 'left',
+          sortable: true
+        }
 
 
 
@@ -78,10 +94,10 @@ export default {
     }
   },
   mounted(){
-    
+
     this.getCourses();
     console.log(this)
-    
+
     //this.$root.on('refesh_courses', this.getCourses)
   }
 }
