@@ -1,6 +1,6 @@
 <template>
   <div class="full-height q-mt-xl">
-      <teacherForm></teacherForm>
+      <teacherForm @refesh_teachers="getTeachers"></teacherForm>
       <q-table
       title="Profesores"
       :rows="rows"
@@ -20,6 +20,24 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td v-for="col in props.cols"  :key="col.name" :props="props">
+          <div v-if="col.name!='actions'">
+            {{ col.value }}
+
+          </div>
+          <div v-if="col.name==='actions'">
+           <teacherForm @refesh_teachers="getTeachers" :teacher="props.row" ></teacherForm>
+
+          </div>
+          </q-td>
+
+
+
+
+        </q-tr>
+      </template>
 
       <template v-slot:no-data="{ icon, message, filter }">
         <div class="full-width row flex-center text-accent q-gutter-sm">
@@ -36,43 +54,42 @@
 
 <script>
 
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import teacherForm from './Form.vue'
+   import { db } from 'boot/db'
 
 export default {
   components:{teacherForm},
   setup () {
+    const rows = ref([])
+     const  getTeachers = ()=>{
+      db.collection('teachers').get().then(res => {
+        rows.value = []
+
+        setTimeout(() => {
+        rows.value = res.reverse();
+
+      }, 100)
+      })}
+    onMounted(()=>{
+      getTeachers();
+    })
+    const calculateAge = (birthday) => {
+   let hoy = new Date();
+     let cumpleanos = new Date(birthday);
+    let edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    let m = hoy.getMonth() - cumpleanos.getMonth();
+
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+        edad--;
+    }
+
+    return edad;
+    }
     return {
 
- rows: [
-  {
-    name: 'Jose 1',
-    ci: 159,
-    age: 6.0,
-
-  },
-   {
-    name: 'Jose 1',
-    ci: 159,
-    age: 6.0,
-
-  },
-  {
-    name: 'Jose 1',
-    ci: 159,
-    age: 6.0,
-
-  },
-  {
-    name: 'Jose 1',
-    ci: 159,
-    age: 6.0,
-
-  },
-
-
-
-],
+ rows,
+ getTeachers,
       filter: ref(''),
 
       columns: [
@@ -86,7 +103,8 @@ export default {
           sortable: true
         },
         { name: 'ci', align: 'center', label: 'cedula', field: 'ci', sortable: true },
-        { name: 'age', label: 'Edad', field: 'age', sortable: true },
+        { name: 'age', label: 'Edad', field: 'age', field: row => row.b_date, format:val => calculateAge(val), sortable: true },
+          { name: 'actions', label: 'Acciones', field:'actions', sortable: true },
 
 
       ]
