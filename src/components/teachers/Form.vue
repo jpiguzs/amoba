@@ -7,11 +7,10 @@
       <q-card class="border-8px" style="width:320px">
         <q-card-section class="text-h6 text-blue1 text-center" >
               Nuevo Profesor
-              {{teacher}}
 
         </q-card-section>
-          <q-form @submit="save">
-        <q-card-section>
+          <q-form @submit="save" class="q-gutter-sm">
+        <q-card-section class="q-gutter-xs">
 
           <div>
               <q-input v-if="showForm" class="input" dense borderless label="nombres" v-model="teacher.name"   :rules="[
@@ -94,7 +93,7 @@ export default {
   setup (props) {
 
    const  getCourses = ()=>{
-      db.collection('course').get().then(res => {
+  db.collection('course').get().then(res => {
   courses.value = []
   courses.value = res.reverse();
 })}
@@ -107,6 +106,10 @@ onMounted(() => {
     const courses = ref([])
 
     const edit = teacher.value.id ===null ? false :true;
+    if(edit){
+
+      teacher.value.courses =JSON.parse(teacher.value.courses)
+    }
 
     return {
      teacher,
@@ -127,14 +130,14 @@ onMounted(() => {
           last_name:this.teacher.last_name,
           ci:this.teacher.ci,
           b_date:this.teacher.b_date,
-          courses:this.teacher.courses,
+          courses:JSON.stringify(this.teacher.courses) ,
       }).then(res=>{
         this.$q.loading.hide();
       this.$q.notify({
         message:'Guardado con exito',
         color:"green"
       })
-      this.$emit('refesh_courses')
+      this.$emit('refesh_teachers')
       this.showForm =false;
 
       }).catch(err=>{
@@ -156,8 +159,8 @@ onMounted(() => {
         message:'Guardado con exito',
         color:"green"
       })
-      this.$emit('refesh_courses')
-      this.course.name =null;
+      this.$emit('refesh_teachers')
+
       this.showForm =false;
     })
 

@@ -1,7 +1,6 @@
 <template>
   <div>
-      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="add" label="Nuevo Año
-      "></q-btn>
+      <YearFormVue @refesh_year="getYear()"></YearFormVue>
       <q-table
       title="Años escolares"
       :rows="rows"
@@ -21,6 +20,25 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td v-for="col in props.cols"  :key="col.name" :props="props">
+          <div v-if="col.name!='actions'">
+            {{ col.value }}
+
+          </div>
+          <div v-if="col.name==='actions'">
+
+           <YearFormVue @refesh_year="getYear()" :year="props.row"></YearFormVue>
+
+          </div>
+          </q-td>
+
+
+
+
+        </q-tr>
+      </template>
 
       <template v-slot:no-data="{ icon, message, filter }">
         <div class="full-width row flex-center text-accent q-gutter-sm">
@@ -36,42 +54,29 @@
 </template>
 
 <script>
-
-  import { ref } from 'vue'
-
+import YearFormVue from './YearForm.vue'
+import { ref, onMounted } from 'vue'
+   import { db } from 'boot/db'
 export default {
+  components:{YearFormVue},
   setup () {
+    const rows= ref([]);
+     const  getYear = ()=>{
+      db.collection('years').get().then(res => {
+        rows.value = []
+
+        setTimeout(() => {
+        rows.value = res.reverse();
+
+      }, 100)
+      })}
+    onMounted(()=>{
+      getYear();
+    })
     return {
 
- rows: [
-  {
-    name: '2017-2018',
-    status: 'culminado',
-    age: 6.0,
-
-  },
-   {
-    name: '2018-2019',
-    status: 'culminado',
-    age: 6.0,
-
-  },
-  {
-    name: '2019-2020',
-    status: 'culminado',
-    age: 6.0,
-
-  },
-  {
-    name: '2020-2021',
-    status: 'En proceso',
-    age: 6.0,
-
-  },
-
-
-
-],
+      rows,
+      getYear,
       filter: ref(''),
 
       columns: [
@@ -89,10 +94,11 @@ export default {
           required: true,
           label: 'Estatus',
           align: 'left',
-          field: row => row.status,
+          field: row => row.statusname,
           format: val => `${val}`,
           sortable: true
         },
+          { name: 'actions', label: 'Acciones', field:'actions', sortable: true },
 
 
 

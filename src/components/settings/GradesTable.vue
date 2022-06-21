@@ -1,7 +1,6 @@
 <template>
   <div>
-      <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="add" label="Nuevo grado
-      "></q-btn>
+     <GradesFormVue @refesh_grades="getGrades()"></GradesFormVue>
       <q-table
       title="Grados"
       :rows="rows"
@@ -21,6 +20,25 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td v-for="col in props.cols"  :key="col.name" :props="props">
+          <div v-if="col.name!='actions'">
+            {{ col.value }}
+
+          </div>
+          <div v-if="col.name==='actions'">
+
+           <GradesFormVue @refesh_grades="getGrades()" :grade="props.row"></GradesFormVue>
+
+          </div>
+          </q-td>
+
+
+
+
+        </q-tr>
+      </template>
 
       <template v-slot:no-data="{ icon, message, filter }">
         <div class="full-width row flex-center text-accent q-gutter-sm">
@@ -36,45 +54,31 @@
 </template>
 
 <script>
-
-  import { ref } from 'vue'
-
+ import { db } from 'boot/db'
+import { ref , onMounted } from 'vue'
+import GradesFormVue from './GradesForm.vue'
 export default {
+  components:{GradesFormVue},
   setup () {
+    const rows= ref([])
+    const getGrades = ()=>{
+    db.collection('grades').get().then(res => {
+    rows.value = []
+    rows.value = res.reverse();
+    console.log(res)
+})
+
+    }
+      onMounted(()=>{
+      getGrades();
+    })
     return {
+      rows,
+      getGrades,
 
- rows: [
-  {
-    name: '1 año',
-    ci: 159,
-    age: 6.0,
-
-  },
-   {
-    name: '2 año',
-    ci: 159,
-    age: 6.0,
-
-  },
-  {
-    name: '3 año',
-    ci: 159,
-    age: 6.0,
-
-  },
-  {
-    name: '4 año',
-    ci: 159,
-    age: 6.0,
-
-  },
-
-
-
-],
       filter: ref(''),
 
-      columns: [
+       columns: [
         {
           name: 'name',
           required: true,
@@ -84,6 +88,7 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
+        { name: 'actions', label: 'Acciones', field:'actions', sortable: true },
 
 
 
