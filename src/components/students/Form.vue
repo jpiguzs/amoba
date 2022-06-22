@@ -81,7 +81,12 @@
         ]"
         />
           </div>
-
+       <div>
+              <q-input v-if="showForm" class="input"  type="password" dense borderless label="clave de ingreso" v-model="password"   :rules="[
+          val => !!val || 'Campo obligatorio'
+        ]"
+      ></q-input>
+          </div>
 
 
         </q-card-section>
@@ -131,6 +136,7 @@ onMounted(() => {
   const {student} = toRefs(props)
   const grades = ref([])
   const edit = student.value.id ===null ? false :true;
+  const password = ref(null)
   const sections = ref([])
   if(edit){
     student.value.courses =JSON.parse(student.value.courses)
@@ -149,7 +155,8 @@ onMounted(() => {
      showForm,
      edit,
      grades,
-     sections
+     sections,
+     password
 
     }
   },
@@ -183,6 +190,16 @@ onMounted(() => {
         message:'Guardado con exito',
         color:"green"
       })
+       db.collection('users').doc({ id: this.student.id }).update(
+        {
+          name:this.student.name+""+ this.student.last_name,
+          user_name:this.student.ci,
+          password:this.password,
+          type:2
+
+          }).then(res =>{
+
+        })
       this.$emit('refesh_students')
       this.showForm =false;
 
@@ -190,10 +207,11 @@ onMounted(() => {
         debug(err)
       })
     }else{
+      let id = CreatorId('student');
        db.collection('students').add(
         {
           name:this.student.name,
-          id:CreatorId('student'),
+          id,
           last_name:this.student.last_name,
            ci:this.student.ci,
            b_date:this.student.b_date,
@@ -207,6 +225,17 @@ onMounted(() => {
         message:'Guardado con exito',
         color:"green"
       })
+       db.collection('users').add(
+        {
+          name:this.student.name+""+ this.student.last_name,
+          id,
+          user_name:this.student.ci,
+          password:this.password,
+          type:3
+
+          }).then(res =>{
+
+        })
       this.$emit('refesh_students')
 
       this.showForm =false;

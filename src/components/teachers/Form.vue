@@ -58,6 +58,14 @@
         ]"
         />
           </div>
+          <div>
+            <div>
+              <q-input v-if="showForm" class="input" dense borderless label="clave de accesso" type="password" v-model="password"   :rules="[
+          val => !!val || 'Campo obligatorio'
+        ]"
+      ></q-input>
+          </div>
+          </div>
 
 
 
@@ -101,10 +109,10 @@ onMounted(() => {
   getCourses() // <div>
 })
 
-    const showForm = ref(false)
+  const showForm = ref(false)
   const {teacher} = toRefs(props)
-    const courses = ref([])
-
+  const courses = ref([])
+  const password = ref(null)
     const edit = teacher.value.id ===null ? false :true;
     if(edit){
 
@@ -116,6 +124,7 @@ onMounted(() => {
      showForm,
      edit,
      courses,
+    password
 
     }
   },
@@ -137,6 +146,17 @@ onMounted(() => {
         message:'Guardado con exito',
         color:"green"
       })
+       db.collection('users').doc({ id: this.teacher.id}).update(
+        {
+          name:this.teacher.name+""+ this.teacher.last_name,
+          user_name:this.teacher.ci,
+          password:this.password,
+          type:2
+
+          }).then(res =>{
+
+        })
+
       this.$emit('refesh_teachers')
       this.showForm =false;
 
@@ -144,10 +164,11 @@ onMounted(() => {
         debug(err)
       })
     }else{
+      let id = CreatorId('teacher');
        db.collection('teachers').add(
         {
           name:this.teacher.name,
-          id:CreatorId('teacher'),
+          id,
           last_name:this.teacher.last_name,
            ci:this.teacher.ci,
            b_date:this.teacher.b_date,
@@ -159,6 +180,17 @@ onMounted(() => {
         message:'Guardado con exito',
         color:"green"
       })
+      db.collection('users').add(
+        {
+          name:this.teacher.name+""+ this.teacher.last_name,
+          id,
+          user_name:this.teacher.ci,
+          password:this.password,
+          type:2
+
+          }).then(res =>{
+
+        })
       this.$emit('refesh_teachers')
 
       this.showForm =false;

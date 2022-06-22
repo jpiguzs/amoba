@@ -37,3 +37,14 @@ border-radius: 20px;
     color:$blue1;
   }
 }
+.btn--primary{
+  background-color: $blue1;
+  color:white;
+}
+.card-customize {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  /* Note: backdrop-filter has minimal browser support */
+  margin: 1%;
+  border-radius: 20px;
+}
