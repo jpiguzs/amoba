@@ -163,14 +163,18 @@ onMounted(() => {
 
      methods :{
        save(){
+    let id = CreatorId('student');
     let courses = JSON.parse(this.grades.find(grade => grade.id=== this.student.grade_id).courses);
     this.student.courses = courses.map(course =>{
       let data = {
         course_id:course.course_id,
         teacher_id:course.teacher_id,
+        grade_id:this.student.grade_id,
+        section_id:this.student.section_id,
         lapso1:null,
         lapso2:null,
-        lapso3:null
+        lapso3:null,
+        student_id: this.student.id ? this.student.id :id
       }
       return data
     })
@@ -207,7 +211,7 @@ onMounted(() => {
         debug(err)
       })
     }else{
-      let id = CreatorId('student');
+
        db.collection('students').add(
         {
           name:this.student.name,

@@ -64,9 +64,11 @@ import { db } from 'boot/db'
 import { useQuasar } from 'quasar'
 import { storeToRefs } from 'pinia';
 import { useAuthStore} from 'stores/auth.store';
+import { useRouter} from 'vue-router'
 export default {
   name: "login-vue",
   setup(){
+     const router = useRouter()
     const $q = useQuasar()
     const password = ref(null)
     const user_name = ref(null)
@@ -94,12 +96,16 @@ export default {
             color:"red"
           })
       } else{
-        console.log(authStore)
+
         authStore.SetUser(userFound);
+
          $q.notify({
             message:"Datos correctos",
             color:"green"
           })
+      if(userFound.type===2){
+        router.push('/admin-teachers');
+      }
       }
     }
     return {

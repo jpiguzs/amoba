@@ -1,6 +1,6 @@
 <template>
   <div class="full-height q-mt-xl">
-    <FormVue ></FormVue>
+    <FormVue @refesh_students="getStudents()" ></FormVue>
       <q-table
       title="Estudiantes"
       :rows="rows"
@@ -22,7 +22,7 @@
       </template>
         <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td v-for="col in props.cols"  :key="col.name" :props="props">
+          <q-td v-for="col in props.cols" @refesh_students="getStudents()"  :key="col.name" :props="props">
           <div v-if="col.name!='actions'">
             {{ col.value }}
 
