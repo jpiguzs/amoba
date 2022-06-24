@@ -46,7 +46,7 @@ import { defineComponent, ref } from 'vue'
 import tabsVue from 'components/commons/Tabs.vue'
 
 const menuData =[
-  {title:'Estudiantes', icon:'school', url:'/'},
+  {title:'Estudiantes', icon:'school', url:'/students'},
   {title:'Profesores', icon:'cast_for_education', url:'/teachers'},
    {title:'Usuarios', icon:'person', url:'/users'},
    {title:'Configuraciones', icon:'settings', url:'/settings'},

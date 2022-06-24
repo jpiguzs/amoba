@@ -26,6 +26,19 @@
                 <coursesTeacherForm :course="course"></coursesTeacherForm>
             </div>
           </div>
+          <div>
+            <div class="flex flex-center">
+              Secciones <q-btn class="bg-tramsparent text-grey1 btn-success" dense rounded @click="setNewSecctions()" icon="add"></q-btn>
+            </div>
+            <div  v-for="(section, index) in grade.secctions" :key="index">
+                <div>
+              <q-input v-if="showForm" class="input" dense borderless label="Seccion" v-model="section.name"   :rules="[
+          val => !!val || 'Campo obligatorio'
+        ]"
+      ></q-input>
+            </div>
+          </div>
+        </div>
 
 
 
@@ -56,7 +69,7 @@ export default {
     grade:{
       type:Object,
       default:function(){
-        return ref ({name:null, last_name:null,ci:null,b_date:null, id:null, courses:[] })
+        return ref ({name:null, last_name:null,ci:null,b_date:null, id:null, courses:[], secctions:[] })
       }
     }
 
@@ -79,6 +92,7 @@ export default {
 }
   onMounted(() => {
     getOptions() // <div>
+
   })
 
 
@@ -89,11 +103,24 @@ export default {
         teacher_id:null,
       })
     }
+    const setNewSecctions = ()=>{
+      grade.value.secctions.push({
+        id:CreatorId('sections'),
+        name:null,
+      })
+    }
+
+    // if(grade.value.secctions.length === 0){
+    //   setNewSecctions();
+    //   grade.value.secctions = JSON.stringify( grade.value.secctions);
+    //   console.log('hola')
+    // }
 
     const edit = grade.value.id ===null ? false :true;
     if(edit){
 
       grade.value.courses =JSON.parse(grade.value.courses)
+      grade.value.secctions = JSON.parse( grade.value.secctions );
     }else{
       setNewCurse()
     }
@@ -104,7 +131,8 @@ export default {
      edit,
      courses,
      setNewCurse,
-     teachers
+     teachers,
+     setNewSecctions
 
     }
   },
@@ -116,7 +144,7 @@ export default {
     if(this.grade.id){
       db.collection('grades').doc({ id: this.grade.id }).update({
         name:this.grade.name,
-
+        secctions:JSON.stringify(this.grade.secctions),
         courses:JSON.stringify(this.grade.courses) ,
       }).then(res=>{
         this.$q.loading.hide();
@@ -124,7 +152,7 @@ export default {
         message:'Guardado con exito',
         color:"green"
       })
-      this.$emit('refesh_grades')
+      window.location.reload()
       this.showForm =false;
 
       }).catch(err=>{
@@ -136,14 +164,14 @@ export default {
           name:this.grade.name,
           id:CreatorId('grade'),
            courses:JSON.stringify(this.grade.courses) ,
-
+              secctions:JSON.stringify(this.grade.secctions),
           }).then(res =>{
       this.$q.loading.hide()
       this.$q.notify({
         message:'Guardado con exito',
         color:"green"
       })
-      this.$emit('refesh_grades')
+      window.location.reload()
 
       this.showForm =false;
     })
