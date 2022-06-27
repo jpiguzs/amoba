@@ -106,6 +106,12 @@ export default {
       if(userFound.type===2){
         router.push('/admin-teachers');
       }
+      if(userFound.type===1){
+        router.push('/students');
+      }
+      if(userFound.type===3){
+        router.push('/admin-students');
+      }
       }
     }
     return {

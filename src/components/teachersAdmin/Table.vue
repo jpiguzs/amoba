@@ -21,6 +21,30 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td v-for="col in props.cols" @refesh_students="getStudents()"  :key="col.name" :props="props">
+          <div v-if="col.name!='actions'">
+            {{ col.value }}
+
+          </div>
+          <div v-if="col.name==='actions'">
+            <FormVue 
+            :course="props.row" 
+            :student="getStudentName(props.row.student_id)"
+            :course_name="getCourseName(props.row.course_id)"
+            :section_name="getSecionName(props.row.grade_id, props.row.section_id)"
+            :grade_name="getGradeName(props.row.grade_id)"
+            ></FormVue>
+
+          </div>
+          </q-td>
+
+
+
+
+        </q-tr>
+      </template>
 
       <template v-slot:no-data="{ icon, message, filter }">
         <div class="full-width row flex-center text-accent q-gutter-sm">
@@ -41,8 +65,9 @@
     import { db } from 'boot/db'
     import { useAuthStore} from 'stores/auth.store';
     import { storeToRefs } from 'pinia';
+    import FormVue from './Form.vue';
 export default {
-
+  components:{FormVue},
   setup () {
      const authStore = useAuthStore();
     const { user: authUser } = storeToRefs(authStore);
@@ -51,7 +76,7 @@ export default {
       const studentsDb = ref([])
      const averg = function(student){
       let factor =[student.lapso1, student.lapso2, student.lapso3].filter(lapso=> lapso != null).length;
-       let total = (student.lapso1? student.lapso1 : 0 ) + (student.lapso2? student.lapso2 : 0 ) + (student.lapso3? student.lapso3 : 0 );
+       let total = (student.lapso1?  parseInt(student.lapso1) : 0 ) + ( student.lapso2? parseInt(student.lapso2) : 0 ) + (student.lapso3? parseInt(student.lapso3) : 0 );
 
        return factor===0 ?'no hay notas': total/factor;
     }
@@ -130,6 +155,10 @@ export default {
     return {
 
       rows,
+      getCourseName,
+      getSecionName,
+      getStudentName,
+      getGradeName,
       filter: ref(''),
 
       columns: [
@@ -155,6 +184,7 @@ export default {
         { name: 'laptso2', align: 'center', label: 'nota lapso 2', field: row=> row.lapso2, sortable: true },
         { name: 'laptso3', align: 'center', label: 'nota lapso 3', field: row=> row.lapso3, sortable: true },
         { name: 'total', align: 'center', label: 'Promedio', field: row =>  averg(row), sortable: true },
+        { name: 'actions', align: 'center', label: 'Ver', sortable: true },
 
 
       ]
