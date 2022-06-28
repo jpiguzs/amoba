@@ -10,6 +10,16 @@
         </q-toolbar-title>
 
 
+
+        <q-space/>
+       <div class="text-blue1">
+      <q-btn  class="bg-tramsparent text-grey1" v-if="user" :label="user.name" flat no-caps icon="logout" @click="logout()">
+        <q-tooltip>
+          Salir
+        </q-tooltip>
+      </q-btn>
+       </div>
+
       </q-toolbar>
     </q-header>
 
@@ -26,6 +36,8 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import tabsVue from 'components/commons/Tabs.vue'
+import { useAuthStore} from 'stores/auth.store';
+import { storeToRefs } from 'pinia';
 
 const menuData =[
   {title:'Estudiantes', icon:'school', url:'/'},
@@ -40,11 +52,17 @@ export default defineComponent({
     tabsVue
   },
 
-  setup () {
 
+  setup () {
+      const authStore = useAuthStore();
+      const { user: authUser } = storeToRefs(authStore);
     const leftDrawerOpen = ref(false)
 
+
     return {
+      user:authUser,
+      authStore,
+
       tabsData:menuData,
 
       leftDrawerOpen,
@@ -54,7 +72,13 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
-  }
+  },
+   methods:{
+    logout(){
+        this.authStore.logout();
+        this.$router.push('/')
+    }
+  },
 })
 </script>
 <style>

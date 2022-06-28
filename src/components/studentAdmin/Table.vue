@@ -37,98 +37,100 @@
 
 <script>
 
-  import { ref } from 'vue'
+   import { ref, onMounted } from 'vue'
+    import { db } from 'boot/db'
+    import { useAuthStore} from 'stores/auth.store';
+    import { storeToRefs } from 'pinia';
 
 export default {
   setup () {
+  const authStore = useAuthStore();
+      const { user: authUser } = storeToRefs(authStore);
+      const grades = ref([])
+      const courses = ref([])
+      const studentsDb = ref([])
+      const averg = function(student){
+      let factor =[student.lapso1, student.lapso2, student.lapso3].filter(lapso=> lapso != null).length;
+       let total = (student.lapso1?  parseInt(student.lapso1) : 0 ) + ( student.lapso2? parseInt(student.lapso2) : 0 ) + (student.lapso3? parseInt(student.lapso3) : 0 );
+
+       return factor===0 ?'no hay notas': total/factor;
+    }
+    const rows = ref([])
+     const getGradeName = (grade_id)=>{
+
+      if(grades.value.length > 0){
+         return grades.value.find(grade => grade.id === grade_id).name
+      }
+
+    }
+     const getSecionName = (grade_id, secction_id)=>{
+      if(grades.value.length > 0){
+        console.log()
+        let sections = JSON.parse( grades.value.find(grade => grade.id === grade_id).secctions)
+      return sections.find(section=> section.id === secction_id).name
+    }
+      }
+      const getStudentName = (student_id)=>{
+      if(studentsDb.value.length > 0){
+      console.log(student_id)
+      let student =   studentsDb.value.find(row => row.id === student_id)
+      return student.name + ' ' + student.last_name
+    }
+      }
+       const getCourseName = (course_id)=>{
+      if(courses.value.length > 0){
+        console.log(course_id)
+     return  courses.value.find(row => row.id === course_id).name
+
+    }
+      }
+
+     const  getStudents = ()=>{
+      db.collection('students').get().then(res => {
+        rows.value = []
+
+        studentsDb.value = res;
+
+
+
+        let courses_array=JSON.parse(res.find(student => student.id ===authUser.value.id).courses)
+
+        setTimeout(() => {
+        rows.value = courses_array;
+        console.log(rows.value, 'valores')
+
+      }, 100)
+      })
+      db.collection('grades').get().then(res => {
+        grades.value = []
+
+
+        setTimeout(() => {
+        grades.value = res.reverse();
+
+      }, 100)
+      })
+      db.collection('course').get().then(res => {
+        courses.value = []
+        console.log(res)
+
+        setTimeout(() => {
+        courses.value = res.reverse();
+
+      }, 100)
+      })
+      }
+    onMounted(()=>{
+
+      getStudents();
+    })
     return {
 
- rows: [
-  {
-    course: 'Matematica',
-    student: {
-    name :'Jose Gregorio' ,
-    last_name:'Piguz sanvicente',
-    grade:'5to año',
-    section:'A',
-    lapso1:10,
-    lapso2:3,
-    lapso3:null,
-    averg: function(){
-      let factor =[this.lapso1, this.lapso2, this.lapso3].filter(lapso=> lapso != null).length;
-       let total = (this.lapso1? this.lapso1 : 0 ) + (this.lapso2? this.lapso2 : 0 ) + (this.lapso3? this.lapso3 : 0 );
-
-       return total/factor;
-    }
-    },
-
-
-  },
-   {
-    course: 'Fisica',
-    student: {
-    name :'Jose Gregorio' ,
-    last_name:'Piguz sanvicente',
-    grade:'5to año',
-    section:'A',
-    lapso1:10,
-    lapso2:10,
-    lapso3:null,
-    averg: function(){
-      let factor =[this.lapso1, this.lapso2, this.lapso3].filter(lapso=> lapso != null).length;
-       let total = (this.lapso1? this.lapso1 : 0 ) + (this.lapso2? this.lapso2 : 0 ) + (this.lapso3? this.lapso3 : 0 );
-
-       return total/factor;
-    }
-    },
-
-
-  },
-   {
-    course: 'Quimica',
-    student: {
-    name :'Jose Gregorio' ,
-    last_name:'Piguz sanvicente',
-    grade:'5to año',
-    section:'A',
-    lapso1:10,
-    lapso2:7,
-    lapso3:null,
-    averg: function(){
-      let factor =[this.lapso1, this.lapso2, this.lapso3].filter(lapso=> lapso != null).length;
-       let total = (this.lapso1? this.lapso1 : 0 ) + (this.lapso2? this.lapso2 : 0 ) + (this.lapso3? this.lapso3 : 0 );
-
-       return total/factor;
-    }
-    },
-
-
-  },
-   {
-    course: 'Deporte',
-    student: {
-    name :'Jose Gregorio' ,
-    last_name:'Piguz sanvicente',
-    grade:'5to año',
-    section:'A',
-    lapso1:7,
-    lapso2:9,
-    lapso3:null,
-    averg: function(){
-      let factor =[this.lapso1, this.lapso2, this.lapso3].filter(lapso=> lapso != null).length;
-       let total = (this.lapso1? this.lapso1 : 0 ) + (this.lapso2? this.lapso2 : 0 ) + (this.lapso3? this.lapso3 : 0 );
-
-       return total/factor;
-    }
-    },
-
-
-  },
-
-
-
-
-],
+      rows,
+      getCourseName,
+      getSecionName,
+      getStudentName,
+      getGradeName,
       filter: ref(''),
 
       columns: [
@@ -137,16 +139,18 @@ export default {
           required: true,
           label: 'Materia',
           align: 'left',
-          field: row => row.course,
-          format: val => `${val}`,
+          field: row => row.course_id,
+          format: val => getCourseName(val),
           sortable: true
         },
 
-
-        { name: 'laptso1', align: 'center', label: 'nota lapso 1', field: row=> row.student.lapso1, sortable: true },
-        { name: 'laptso2', align: 'center', label: 'nota lapso 2', field: row=> row.student.lapso2, sortable: true },
-        { name: 'laptso3', align: 'center', label: 'nota lapso 3', field: row=> row.student.lapso3, sortable: true },
-        { name: 'total', align: 'center', label: 'Promedio', field: row =>  row.student.averg(), sortable: true },
+        { name: 'Grade', align: 'center', label: 'grado', field: row => getGradeName(row.grade_id), sortable: true },
+        { name: 'secction', align: 'center', label: 'Seccion', field: row => getSecionName(row.grade_id, row.section_id), sortable: true },
+        { name: 'laptso1', align: 'center', label: 'nota lapso 1', field: row=> row.lapso1, sortable: true },
+        { name: 'laptso2', align: 'center', label: 'nota lapso 2', field: row=> row.lapso2, sortable: true },
+        { name: 'laptso3', align: 'center', label: 'nota lapso 3', field: row=> row.lapso3, sortable: true },
+        { name: 'total', align: 'center', label: 'Promedio', field: row =>  averg(row), sortable: true },
+        { name: 'actions', align: 'center', label: 'Ver', sortable: true },
 
 
       ]

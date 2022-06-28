@@ -22,7 +22,7 @@
     <q-card-section>
       <q-form @submit="save" >
 
-     
+
       <div class="row ">
 
         <div class="col-4 q-pa-xs">
@@ -32,7 +32,7 @@
          <div class="col-4 q-pa-xs">
 
           <q-input class="input" type="number" dense borderless label="segundo lapso" v-model="course.lapso2"></q-input>
-        </div> 
+        </div>
         <div class="col-4 q-pa-xs">
 
           <q-input class="input" type="number" dense borderless label="tercer lapso" v-model="course.lapso3"></q-input>
@@ -79,7 +79,7 @@ export default {
     const {student, course_name, section_name, grade_name, course} = toRefs(props)
     return {
       student, course_name, section_name, grade_name, course,
-      showForm 
+      showForm
     }
   },
   methods :{
@@ -89,10 +89,10 @@ export default {
         courses = JSON.parse(courses)
         let course_index = courses.findIndex(course => {
           return course.teacher_id === this.course.teacher_id && course.course_id === this.course.course_id;
-        }) 
+        })
         courses[course_index] = this.course;
         db.collection('students').doc({ id: document.id }).update({
-        
+
           courses:JSON.stringify(courses) ,
       }).then(res=>{
         this.$q.loading.hide();
@@ -100,7 +100,8 @@ export default {
         message:'Guardado con exito',
         color:"green"
       })})
-        
+      this.showForm =false;
+
 })
     }
   }

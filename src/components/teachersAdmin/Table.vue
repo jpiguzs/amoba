@@ -29,8 +29,8 @@
 
           </div>
           <div v-if="col.name==='actions'">
-            <FormVue 
-            :course="props.row" 
+            <FormVue
+            :course="props.row"
             :student="getStudentName(props.row.student_id)"
             :course_name="getCourseName(props.row.course_id)"
             :section_name="getSecionName(props.row.grade_id, props.row.section_id)"
@@ -69,12 +69,12 @@
 export default {
   components:{FormVue},
   setup () {
-     const authStore = useAuthStore();
-    const { user: authUser } = storeToRefs(authStore);
+      const authStore = useAuthStore();
+      const { user: authUser } = storeToRefs(authStore);
       const grades = ref([])
       const courses = ref([])
       const studentsDb = ref([])
-     const averg = function(student){
+      const averg = function(student){
       let factor =[student.lapso1, student.lapso2, student.lapso3].filter(lapso=> lapso != null).length;
        let total = (student.lapso1?  parseInt(student.lapso1) : 0 ) + ( student.lapso2? parseInt(student.lapso2) : 0 ) + (student.lapso3? parseInt(student.lapso3) : 0 );
 

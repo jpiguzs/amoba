@@ -187,7 +187,7 @@ onMounted(() => {
           b_date:this.student.b_date,
           grade_id:this.student.grade_id,
           section_id:this.student.section_id,
-          courses:JSON.stringify(this.student.courses) ,
+
       }).then(res=>{
         this.$q.loading.hide();
       this.$q.notify({
@@ -199,7 +199,7 @@ onMounted(() => {
           name:this.student.name+""+ this.student.last_name,
           user_name:this.student.ci,
           password:this.password,
-          type:2
+          type:3
 
           }).then(res =>{
 

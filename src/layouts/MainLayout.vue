@@ -8,7 +8,14 @@
         <q-toolbar-title>
           Educa
         </q-toolbar-title>
-
+        <q-space/>
+      <div class="text-blue1">
+      <q-btn  class="bg-tramsparent text-grey1" v-if="user" :label="user.name" flat no-caps icon="logout" @click="logout()">
+        <q-tooltip>
+          Salir
+        </q-tooltip>
+      </q-btn>
+       </div>
 
       </q-toolbar>
     </q-header>
@@ -44,7 +51,8 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import tabsVue from 'components/commons/Tabs.vue'
-
+import { useAuthStore} from 'stores/auth.store';
+import { storeToRefs } from 'pinia';
 const menuData =[
   {title:'Estudiantes', icon:'school', url:'/students'},
   {title:'Profesores', icon:'cast_for_education', url:'/teachers'},
@@ -63,10 +71,17 @@ export default defineComponent({
   setup () {
 
     const leftDrawerOpen = ref(false)
+    const authStore = useAuthStore();
+      const { user: authUser } = storeToRefs(authStore);
+      const logout= ()=>{
+        authStore.logout();
+        $router.push('/')
 
+      }
     return {
+      logout,
       tabsData:menuData,
-
+      user:authUser,
       leftDrawerOpen,
       tab: ref('mails'),
       splitterModel: ref(20),
