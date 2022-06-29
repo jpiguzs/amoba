@@ -7,10 +7,15 @@ import { defineComponent, onMounted } from 'vue'
 
  import { CreatorId  } from "src/utilities/idCreator.js";
   import { db } from 'boot/db'
+import { useAuthStore} from 'stores/auth.store';
 export default defineComponent({
   name: 'App',
   setup(){
+      const authStore = useAuthStore();
+
   onMounted(() => {
+
+    authStore.getUsers();
      db.collection('users').get().then(res => {
         if(res.length ===0){
         db.collection('users').add(

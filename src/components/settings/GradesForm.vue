@@ -6,7 +6,7 @@
      <q-dialog v-model="showForm">
       <q-card class="border-8px" style="width:320px">
         <q-card-section class="text-h6 text-blue1 text-center" >
-              Nuevo Grado
+              Formulario de Grados
 
         </q-card-section>
           <q-form @submit="save" class="q-gutter-sm">

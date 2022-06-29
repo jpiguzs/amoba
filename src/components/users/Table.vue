@@ -2,6 +2,7 @@
   <div class="full-height q-mt-xl">
       <!-- <q-btn class="bg-tramsparent text-grey1" flat no-caps icon="person" label="Nuevo Profesor
       "></q-btn> -->
+      <v_form @refesh_users="getUsers()"></v_form>
       <q-table
       title="Usuarios"
       :rows="rows"
@@ -21,6 +22,24 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td v-for="col in props.cols"  :key="col.name" :props="props">
+          <div v-if="col.name!='actions'">
+            {{ col.value }}
+
+          </div>
+          <div v-if="col.name==='actions'">
+          <v_form @refesh_users="getUsers()" :user="props.row"></v_form>
+
+          </div>
+          </q-td>
+
+
+
+
+        </q-tr>
+      </template>
 
       <template v-slot:no-data="{ icon, message, filter }">
         <div class="full-width row flex-center text-accent q-gutter-sm">
@@ -37,54 +56,46 @@
 
 <script>
 
-  import { ref } from 'vue'
-
+  import { ref, onMounted } from 'vue'
+   import {options, getTypeName} from 'src/utilities/options.js'
+   import v_form  from './Form.vue'
+ import { db } from 'boot/db'
 export default {
+  components:{v_form},
+
   setup () {
+      const rows= ref([]);
+     const  getUsers = ()=>{
+      db.collection('users').get().then(res => {
+        rows.value = []
+
+        setTimeout(() => {
+        rows.value = res.reverse();
+
+      }, 100)
+      })}
+    onMounted(()=>{
+      getUsers();
+    })
     return {
 
- rows: [
-  {
-    name: 'Jose 1',
-    type: 'Admin',
-    age: 6.0,
+ rows,
+ getUsers,
 
-  },
-   {
-    name: 'Jose 1',
-    type: 'Profesor',
-    age: 6.0,
-
-  },
-  {
-    name: 'Jose 1',
-    type: 'Profesor',
-    age: 6.0,
-
-  },
-  {
-    name: 'Jose 1',
-    type: 'Estudiante',
-    age: 6.0,
-
-  },
-
-
-
-],
       filter: ref(''),
 
       columns: [
         {
           name: 'name',
           required: true,
-          label: 'Nomber',
+          label: 'Nombre',
           align: 'left',
           field: row => row.name,
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'type', align: 'center', label: 'Tipo de usario', field: 'type', sortable: true },
+        { name: 'type', align: 'center', label: 'Tipo de usario', field: row => getTypeName(row.type), sortable: true },
+         { name: 'actions', align: 'center', label: 'Ver', sortable: true },
 
 
       ]

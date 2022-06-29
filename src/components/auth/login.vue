@@ -2,7 +2,7 @@
   <div>
     <q-card class="card-customize q-pa-md row " flat>
       <q-card-section class="col-12 flex flex-center text-h6 q-mt-md">
-        Bienvenido a Educa
+        <img src="/educa.png" alt="" style="width: 200px ;" srcset="">
       </q-card-section>
 
       <q-card-section class="col-12">

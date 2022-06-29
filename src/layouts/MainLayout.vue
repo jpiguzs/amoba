@@ -5,9 +5,7 @@
       <q-toolbar >
 
 
-        <q-toolbar-title>
-          Educa
-        </q-toolbar-title>
+
         <q-space/>
       <div class="text-blue1">
       <q-btn  class="bg-tramsparent text-grey1" v-if="user" :label="user.name" flat no-caps icon="logout" @click="logout()">
@@ -27,7 +25,10 @@
 
       width="200"
     >
-    <div class="full-height flex flex-center   ">
+     <div class="q-pt-xl flex flex-center" >
+          <img src="/educa.png" alt="" style="width:100px" srcset="">
+    </div>
+    <div class="height--menu flex flex-center   ">
       <div>
         <tabsVue v-for="(tab, index) in tabsData" :title="tab.title" :url="tab.url" :icon="tab.icon" :key="index"></tabsVue>
 
@@ -73,13 +74,9 @@ export default defineComponent({
     const leftDrawerOpen = ref(false)
     const authStore = useAuthStore();
       const { user: authUser } = storeToRefs(authStore);
-      const logout= ()=>{
-        authStore.logout();
-        $router.push('/')
 
-      }
     return {
-      logout,
+      authStore,
       tabsData:menuData,
       user:authUser,
       leftDrawerOpen,
@@ -89,9 +86,17 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
-  }
+  },
+   methods:{
+    logout(){
+        this.authStore.logout();
+       this.$router.push('/')
+    }
+  },
 })
 </script>
 <style>
-
+.height--menu{
+  height:88%;
+}
 </style>

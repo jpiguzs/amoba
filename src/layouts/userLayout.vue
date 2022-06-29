@@ -5,8 +5,8 @@
       <q-toolbar >
 
 
-        <q-toolbar-title>
-          Educa
+        <q-toolbar-title class="q-pa-md">
+          <img src="/educa.png" alt="" style="width:100px" srcset="">
         </q-toolbar-title>
 
 
@@ -76,7 +76,7 @@ export default defineComponent({
    methods:{
     logout(){
         this.authStore.logout();
-        this.$router.push('/')
+       this.$router.push('/')
     }
   },
 })

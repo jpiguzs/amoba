@@ -83,7 +83,7 @@ export default {
         {
           name: 'name',
           required: true,
-          label: 'Nomber',
+          label: 'Nombre',
           align: 'left',
           field: row => row.name,
           format: val => `${val}`,

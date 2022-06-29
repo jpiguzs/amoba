@@ -6,7 +6,7 @@
      <q-dialog v-model="showForm">
       <q-card class="border-8px" style="width:320px">
         <q-card-section class="text-h6 text-blue1 text-center" >
-              Nuevo Profesor
+              Formulario para Profesor
 
         </q-card-section>
           <q-form @submit="save" class="q-gutter-sm">
@@ -60,7 +60,7 @@
           </div>
           <div>
             <div>
-              <q-input v-if="showForm" class="input" dense borderless label="clave de accesso" type="password" v-model="password"   :rules="[
+                  <q-input v-if="!edit" class="input"  type="password" dense borderless label="clave de ingreso" v-model="password"   :rules="[
           val => !!val || 'Campo obligatorio'
         ]"
       ></q-input>
@@ -86,6 +86,7 @@
 
  import { CreatorId  } from "src/utilities/idCreator.js";
  import { ref, toRefs, onMounted} from 'vue'
+   import { useAuthStore} from 'stores/auth.store';
 
 export default {
   // name: 'ComponentName',
@@ -99,7 +100,7 @@ export default {
 
   },
   setup (props) {
-
+ const authStore = useAuthStore();
    const  getCourses = ()=>{
   db.collection('course').get().then(res => {
   courses.value = []
@@ -120,6 +121,7 @@ onMounted(() => {
     }
 
     return {
+       authStore,
      teacher,
      showForm,
      edit,
@@ -133,6 +135,14 @@ onMounted(() => {
        save(){
 
     this.$q.loading.show()
+      if(this.authStore.CheckAviableName({user_name:this.teacher.ci, id:this.teacher.id })){
+       this.$q.notify({
+        message:'Esta cedula ya ha esta tomada',
+        color:"red"
+      });
+      this.$q.loading.hide();
+      return
+    }
     if(this.teacher.id){
       db.collection('teachers').doc({ id: this.teacher.id }).update({
         name:this.teacher.name,
@@ -150,14 +160,18 @@ onMounted(() => {
         {
           name:this.teacher.name+""+ this.teacher.last_name,
           user_name:this.teacher.ci,
-          password:this.password,
+
           type:2
 
           }).then(res =>{
 
         })
-
+          setTimeout(() => {
+        this.authStore.getUsers();
       this.$emit('refesh_teachers')
+
+      }, 100)
+
       this.showForm =false;
 
       }).catch(err=>{
@@ -191,6 +205,7 @@ onMounted(() => {
           }).then(res =>{
 
         })
+        this.authStore.getUsers();
       this.$emit('refesh_teachers')
 
       this.showForm =false;

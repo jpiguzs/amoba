@@ -6,7 +6,7 @@
      <q-dialog v-model="showForm">
       <q-card class="border-8px" style="width:320px">
         <q-card-section class="text-h6 text-blue1 text-center" >
-              Nuevo Estudiante
+              Formulario Para Estudiante
 
         </q-card-section>
           <q-form @submit="save" class="q-gutter-sm">
@@ -82,7 +82,7 @@
         />
           </div>
        <div>
-              <q-input v-if="showForm" class="input"  type="password" dense borderless label="clave de ingreso" v-model="password"   :rules="[
+              <q-input v-if="!edit" class="input"  type="password" dense borderless label="clave de ingreso" v-model="password"   :rules="[
           val => !!val || 'Campo obligatorio'
         ]"
       ></q-input>
@@ -106,6 +106,7 @@
 
  import { CreatorId  } from "src/utilities/idCreator.js";
  import { ref, toRefs, onMounted, watch} from 'vue'
+  import { useAuthStore} from 'stores/auth.store';
 
 export default {
   // name: 'ComponentName',
@@ -119,7 +120,7 @@ export default {
 
   },
   setup (props) {
-
+ const authStore = useAuthStore();
 const  getGrades = ()=>{
   db.collection('grades').get().then(res => {
   grades.value = []
@@ -151,6 +152,7 @@ onMounted(() => {
   });
 
     return {
+      authStore,
      student,
      showForm,
      edit,
@@ -179,6 +181,14 @@ onMounted(() => {
       return data
     })
     this.$q.loading.show()
+      if(this.authStore.CheckAviableName({user_name:this.student.ci, id:this.student.id })){
+       this.$q.notify({
+        message:'Esta cedula ya ha esta tomada',
+        color:"red"
+      });
+      this.$q.loading.hide();
+      return
+    }
     if(this.student.id){
       db.collection('students').doc({ id: this.student.id }).update({
         name:this.student.name,
@@ -196,14 +206,15 @@ onMounted(() => {
       })
        db.collection('users').doc({ id: this.student.id }).update(
         {
-          name:this.student.name+""+ this.student.last_name,
+          name:this.student.name+" "+ this.student.last_name,
           user_name:this.student.ci,
-          password:this.password,
+
           type:3
 
           }).then(res =>{
 
         })
+        this.authStore.getUsers();
       this.$emit('refesh_students')
       this.showForm =false;
 
@@ -240,6 +251,7 @@ onMounted(() => {
           }).then(res =>{
 
         })
+        this.authStore.getUsers();
       this.$emit('refesh_students')
 
       this.showForm =false;

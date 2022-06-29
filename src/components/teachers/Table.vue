@@ -65,6 +65,7 @@ export default {
      const  getTeachers = ()=>{
       db.collection('teachers').get().then(res => {
         rows.value = []
+        console.log(res)
 
         setTimeout(() => {
         rows.value = res.reverse();
@@ -96,7 +97,7 @@ export default {
         {
           name: 'name',
           required: true,
-          label: 'Nomber',
+          label: 'Nombre',
           align: 'left',
           field: row => row.name,
           format: val => `${val}`,
