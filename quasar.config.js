@@ -173,7 +173,7 @@ module.exports = configure(function (/* ctx */) {
       bundler: 'packager', // 'packager' or 'builder'
 
       packager: {
-        platform: 'win32'
+        // platform: 'win32'
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
@@ -188,9 +188,10 @@ module.exports = configure(function (/* ctx */) {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-        win: {
-          target: 'portable'
-      },
+      //   win: {
+      //     target: 'portable'
+      // },
+
 
         appId: 'maria-school'
       }

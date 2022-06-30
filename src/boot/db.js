@@ -1,5 +1,4 @@
 import { boot } from 'quasar/wrappers'
-import Localbase from 'localbase'
 
 let db = new Localbase('schooldb');
 
