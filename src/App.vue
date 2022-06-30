@@ -22,7 +22,7 @@ export default defineComponent({
         {
           name:"Administrador",
           id:CreatorId('user'),
-          user_name:'21174755',
+          user_name:'0',
           password:'12345',
           type:1
 
