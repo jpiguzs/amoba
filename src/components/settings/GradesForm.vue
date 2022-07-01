@@ -118,9 +118,11 @@ export default {
 
     const edit = grade.value.id ===null ? false :true;
     if(edit){
-
-      grade.value.courses =JSON.parse(grade.value.courses)
-      grade.value.secctions = JSON.parse( grade.value.secctions );
+        if(typeof grade.value.courses === 'string' ){
+           grade.value.courses =JSON.parse(grade.value.courses)
+            grade.value.secctions = JSON.parse( grade.value.secctions );
+        }
+     
     }else{
       setNewCurse()
     }

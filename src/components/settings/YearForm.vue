@@ -103,7 +103,10 @@ export default {
       year.value.lapsos = lapsos;
       year.value.status = false;
     }else{
-       year.value.lapsos =JSON.parse( year.value.lapsos )
+      if(typeof year.value.lapsos ==='string'){
+        year.value.lapsos =JSON.parse( year.value.lapsos )
+      }
+       
     }
 
 

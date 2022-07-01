@@ -12,10 +12,8 @@
     "@quasar/extras": "^1.0.0",
     "@vueuse/rxjs": "^8.6.0",
     "axios": "^0.21.1",
-    "dexie": "^4.0.0-alpha.3",
     "localbase": "^0.7.5",
-    "lokijs": "^1.5.12",
-    "lowdb": "^3.0.0",
+    "ordered-uuid": "^1.0.0",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "rxdb": "^12.4.3",
@@ -26,8 +24,14 @@
   "devDependencies": {
     "@quasar/app-vite": "^1.0.0-alpha.0",
     "autoprefixer": "^10.4.2",
-    "electron": "^19.0.5",
-    "electron-packager": "^15.5.1"
+ 
+    "workbox-build": "^6.5.3",
+    "workbox-cacheable-response": "^6.5.3",
+    "workbox-core": "^6.5.3",
+    "workbox-expiration": "^6.5.3",
+    "workbox-precaching": "^6.5.3",
+    "workbox-routing": "^6.5.3",
+    "workbox-strategies": "^6.5.3"
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",

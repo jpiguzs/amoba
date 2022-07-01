@@ -140,7 +140,10 @@ onMounted(() => {
   const password = ref(null)
   const sections = ref([])
   if(edit){
-    student.value.courses =JSON.parse(student.value.courses)
+    if(typeof student.value.courses === 'string' ){
+      student.value.courses =JSON.parse(student.value.courses)
+    }
+    
 
   }
  watch(student.value, (currentValue, oldValue) => {

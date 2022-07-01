@@ -116,8 +116,10 @@ onMounted(() => {
   const password = ref(null)
     const edit = teacher.value.id ===null ? false :true;
     if(edit){
-
-      teacher.value.courses =JSON.parse(teacher.value.courses)
+      if(typeof teacher.value.courses === 'string' ){
+          teacher.value.courses =JSON.parse(teacher.value.courses)
+      }
+    
     }
 
     return {
